@@ -17,7 +17,7 @@ class _AdminScreenState extends State<AdminScreen> {
 
   void load() async {
     try {
-      final res = await apiService.getAdmin();
+      final res = await apiService.get("/admin-area");
       setState(() {
         result = res.data.toString();
       });

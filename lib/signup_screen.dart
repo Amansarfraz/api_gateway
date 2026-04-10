@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'api_service.dart';
-import 'home_screen.dart';
-import 'signup_screen.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignupScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignupScreenState createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final username = TextEditingController();
   final password = TextEditingController();
 
   String message = "";
 
-  void login() async {
+  void signup() async {
     try {
-      var token = await apiService.login(username.text, password.text);
+      await apiService.signup(username.text, password.text);
 
-      print("TOKEN: $token");
-
-      Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+      setState(() {
+        message = "Signup Success! Go back and login.";
+      });
     } catch (e) {
       print(e);
       setState(() {
-        message = "Login Failed";
+        message = "Signup Failed";
       });
     }
   }
@@ -32,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: Text("Signup")),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Column(
@@ -47,16 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: InputDecoration(labelText: "Password"),
             ),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: login, child: Text("Login")),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => SignupScreen()),
-                );
-              },
-              child: Text("Create Account"),
-            ),
+            ElevatedButton(onPressed: signup, child: Text("Signup")),
             Text(message),
           ],
         ),

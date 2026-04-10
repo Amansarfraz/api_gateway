@@ -17,7 +17,7 @@ class _UserScreenState extends State<UserScreen> {
 
   void load() async {
     try {
-      final res = await apiService.getUser();
+      final res = await apiService.get("/user-area");
       setState(() {
         result = res.data.toString();
       });

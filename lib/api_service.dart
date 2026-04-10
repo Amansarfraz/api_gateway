@@ -5,50 +5,31 @@ class ApiService {
 
   String? token;
 
-  void setToken(String t) {
-    token = t;
+  // ✅ SIGNUP (form-data)
+  Future signup(String username, String password) async {
+    return await dio.post(
+      "/signup",
+      data: {"username": username, "password": password},
+      options: Options(contentType: Headers.formUrlEncodedContentType),
+    );
   }
 
+  // ✅ LOGIN (form-data)
   Future login(String username, String password) async {
     final res = await dio.post(
       "/signin",
       data: {"username": username, "password": password},
+      options: Options(contentType: Headers.formUrlEncodedContentType),
     );
+
     token = res.data["access_token"];
     return token;
   }
 
-  Future getProtected() async {
-    return dio.get(
-      "/protected",
-      options: Options(headers: {"Authorization": "Bearer $token"}),
-    );
-  }
-
-  Future getAdmin() async {
-    return dio.get(
-      "/admin-area",
-      options: Options(headers: {"Authorization": "Bearer $token"}),
-    );
-  }
-
-  Future getUser() async {
-    return dio.get(
-      "/user-area",
-      options: Options(headers: {"Authorization": "Bearer $token"}),
-    );
-  }
-
-  Future getProxy() async {
-    return dio.get(
-      "/proxy",
-      options: Options(headers: {"Authorization": "Bearer $token"}),
-    );
-  }
-
-  Future getRateLimited() async {
-    return dio.get(
-      "/rate-limited",
+  // ✅ Common GET with JWT
+  Future get(String path) async {
+    return await dio.get(
+      path,
       options: Options(headers: {"Authorization": "Bearer $token"}),
     );
   }

@@ -16,7 +16,7 @@ class _ProxyScreenState extends State<ProxyScreen> {
   }
 
   void load() async {
-    final res = await apiService.getProxy();
+    final res = await apiService.get("/proxy");
     setState(() {
       result = res.data.toString();
     });
